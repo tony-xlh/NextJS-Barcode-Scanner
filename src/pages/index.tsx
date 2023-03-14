@@ -17,10 +17,6 @@ export default function Home(props:any) {
     setIsActive(!isActive);
   }
 
-  React.useEffect(()=>{
-    console.log(props);
-  },[]);
-
   const onScanned = (results:TextResult[]) => {
     if (results.length>0) {
       let text = "";
