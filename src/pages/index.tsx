@@ -1,11 +1,17 @@
 import BarcodeScanner from '@/components/BarcodeScanner'
+import { TextResult } from 'dynamsoft-javascript-barcode/dist/types/interface/textresult';
 import Head from 'next/head'
 import homeStyles from '../styles/Home.module.css';
 
 export default function Home() {
-  const startScanning = () => {
+  const toggleScanning = () => {
     
   }
+
+  const onScanned = (results:TextResult[]) => {
+    console.log(results);
+  }
+
   return (
     <>
       <Head>
@@ -19,9 +25,10 @@ export default function Home() {
           <div className={homeStyles.barcodeScanner}>
             <BarcodeScanner
               isActive={true}
+              onScanned={(results) => onScanned(results)}
             ></BarcodeScanner>
           </div>
-          <button onClick={startScanning}>Start Scanning</button>
+          <button onClick={toggleScanning}>Start Scanning</button>
         </div>
       </main>
     </>
