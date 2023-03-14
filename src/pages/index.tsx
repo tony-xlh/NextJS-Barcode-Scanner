@@ -3,11 +3,9 @@ import { TextResult } from 'dynamsoft-javascript-barcode/dist/types/interface/te
 import Head from 'next/head'
 import React from 'react';
 import homeStyles from '../styles/Home.module.css';
-import fs from 'fs';
 
 export async function getServerSideProps() {
-  let license:string = "";
-  license = fs.readFileSync('src/license.txt').toString();
+  let license:string|undefined = process.env.DBRLicense;
   return { props: { license:license } };
 }
 
