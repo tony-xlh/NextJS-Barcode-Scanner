@@ -1,11 +1,13 @@
 import BarcodeScanner from '@/components/BarcodeScanner'
 import { TextResult } from 'dynamsoft-javascript-barcode/dist/types/interface/textresult';
 import Head from 'next/head'
+import React from 'react';
 import homeStyles from '../styles/Home.module.css';
 
 export default function Home() {
+  const [isActive,setIsActive] = React.useState(true);
   const toggleScanning = () => {
-    
+    setIsActive(!isActive);
   }
 
   const onScanned = (results:TextResult[]) => {
@@ -24,11 +26,11 @@ export default function Home() {
         <div>
           <div className={homeStyles.barcodeScanner}>
             <BarcodeScanner
-              isActive={true}
+              isActive={isActive}
               onScanned={(results) => onScanned(results)}
             ></BarcodeScanner>
           </div>
-          <button onClick={toggleScanning}>Start Scanning</button>
+          <button onClick={toggleScanning}>{isActive ? "Stop Scanning" : "Start Scanning"}</button>
         </div>
       </main>
     </>
