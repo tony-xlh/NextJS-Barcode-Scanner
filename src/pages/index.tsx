@@ -1,4 +1,6 @@
+import BarcodeScanner from '@/components/BarcodeScanner'
 import Head from 'next/head'
+import homeStyles from '../styles/Home.module.css';
 
 export default function Home() {
   const startScanning = () => {
@@ -14,7 +16,11 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <h2>Next.js Barcode Scanner</h2>
+          <div className={homeStyles.barcodeScanner}>
+            <BarcodeScanner
+              isActive={true}
+            ></BarcodeScanner>
+          </div>
           <button onClick={startScanning}>Start Scanning</button>
         </div>
       </main>
