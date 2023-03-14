@@ -1,14 +1,13 @@
 import { CameraEnhancer } from "dynamsoft-camera-enhancer";
+import { PlayCallbackInfo } from "dynamsoft-camera-enhancer/dist/types/interface/playcallbackinfo";
 import React from "react";
 import { ReactNode } from "react";
 
 export interface CameraProps{
   isActive?:boolean;
-  isPause?:boolean;
-  desiredCamera?:string;
   children?: ReactNode;
   onInitialized?: (enhancer:CameraEnhancer) => void;
-  onOpened?: () => void;
+  onPlayed?: (playCallbackInfo: PlayCallbackInfo) => void;
   onClosed?: () => void;
 }
 
@@ -20,6 +19,16 @@ const BarcodeScanner = (props:CameraProps): React.ReactElement => {
     const init = async () => {
       enhancer.current = await CameraEnhancer.createInstance();
       await enhancer.current.setUIElement(container.current!);
+      enhancer.current.on("played", (playCallbackInfo: PlayCallbackInfo) => {
+        if (props.onPlayed) {
+          props.onPlayed(playCallbackInfo);
+        }
+      });
+      enhancer.current.on("cameraClose", () => {
+        if (props.onClosed) {
+          props.onClosed();
+        }
+      });
       enhancer.current.setVideoFit("cover");
       if (props.onInitialized) {
         props.onInitialized(enhancer.current);
