@@ -3,12 +3,23 @@ import { TextResult } from 'dynamsoft-javascript-barcode/dist/types/interface/te
 import Head from 'next/head'
 import React from 'react';
 import homeStyles from '../styles/Home.module.css';
+import fs from 'fs';
 
-export default function Home() {
+export async function getServerSideProps() {
+  let license:string = "";
+  license = fs.readFileSync('src/license.txt').toString();
+  return { props: { license:license } };
+}
+
+export default function Home(props:any) {
   const [isActive,setIsActive] = React.useState(false);
   const toggleScanning = () => {
     setIsActive(!isActive);
   }
+
+  React.useEffect(()=>{
+    console.log(props);
+  },[]);
 
   const onScanned = (results:TextResult[]) => {
     if (results.length>0) {
@@ -36,6 +47,7 @@ export default function Home() {
           <button onClick={toggleScanning}>{isActive ? "Stop Scanning" : "Start Scanning"}</button>
           <div className={homeStyles.barcodeScanner}>
             <BarcodeScanner
+              license={props.license}
               isActive={isActive}
               onScanned={(results) => onScanned(results)}
             ></BarcodeScanner>

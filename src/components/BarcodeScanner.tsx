@@ -3,19 +3,19 @@ import { PlayCallbackInfo } from "dynamsoft-camera-enhancer/dist/types/interface
 import { TextResult,BarcodeReader } from "dynamsoft-javascript-barcode";
 import React from "react";
 import { ReactNode } from "react";
-import { start } from "repl";
 
-export interface CameraProps{
+export interface ScannerProps{
   isActive?: boolean;
   children?: ReactNode;
   interval?: number;
+  license?: string;
   onInitialized?: (enhancer:CameraEnhancer,reader:BarcodeReader) => void;
   onScanned?: (results:TextResult[]) => void;
   onPlayed?: (playCallbackInfo: PlayCallbackInfo) => void;
   onClosed?: () => void;
 }
 
-const BarcodeScanner = (props:CameraProps): React.ReactElement => {
+const BarcodeScanner = (props:ScannerProps): React.ReactElement => {
   const mounted = React.useRef(false);
   const container = React.useRef(null);
   const enhancer = React.useRef<CameraEnhancer>();
@@ -25,7 +25,11 @@ const BarcodeScanner = (props:CameraProps): React.ReactElement => {
   React.useEffect(()=>{
     const init = async () => {
       if (BarcodeReader.isWasmLoaded() === false) {
-        BarcodeReader.license = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
+        if (props.license) {
+          BarcodeReader.license = props.license;
+        }else{
+          BarcodeReader.license = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==";
+        }
         BarcodeReader.engineResourcePath = "https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@9.6.11/dist/";
       }
       reader.current = await BarcodeReader.createInstance();
