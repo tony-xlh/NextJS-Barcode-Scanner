@@ -11,6 +11,7 @@ export async function getServerSideProps() {
 
 export default function Home(props:any) {
   const [isActive,setIsActive] = React.useState(false);
+  const [initialized,setInitialized] = React.useState(false);
   const toggleScanning = () => {
     setIsActive(!isActive);
   }
@@ -38,10 +39,15 @@ export default function Home(props:any) {
       <main>
         <div className={homeStyles.app}>
           <h2>Next.js Barcode Scanner</h2>
-          <button onClick={toggleScanning}>{isActive ? "Stop Scanning" : "Start Scanning"}</button>
+          {initialized ? (
+            <button onClick={toggleScanning}>{isActive ? "Stop Scanning" : "Start Scanning"}</button>
+          ) : (
+            <div>Initializing...</div>
+          )}
           <div className={homeStyles.barcodeScanner}>
             <BarcodeScanner
               license={props.license}
+              onInitialized={() => setInitialized(true)}
               isActive={isActive}
               onScanned={(results) => onScanned(results)}
             ></BarcodeScanner>
