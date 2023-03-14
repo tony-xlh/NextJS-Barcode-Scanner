@@ -99,6 +99,7 @@ const BarcodeScanner = (props:ScannerProps): React.ReactElement => {
   return (
     <div ref={container} style={{ position:"relative", width:"100%", height:"100%" }}>
       <div className="dce-video-container"></div>
+      {props.children}
     </div>
   )
 }
