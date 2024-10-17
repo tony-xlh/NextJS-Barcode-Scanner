@@ -13,7 +13,7 @@
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "dynamsoft-camera-enhancer": "^3.3.1",
-    "dynamsoft-javascript-barcode": "^9.6.11",
+    "dynamsoft-javascript-barcode": "9.6.42",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
