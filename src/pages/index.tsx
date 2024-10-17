@@ -6,6 +6,9 @@ import homeStyles from '../styles/Home.module.css';
 
 export async function getServerSideProps() {
   let license:string|undefined = process.env.DBRLicense;
+  if (license === undefined) {
+    license = "";
+  }
   return { props: { license:license } };
 }
 
