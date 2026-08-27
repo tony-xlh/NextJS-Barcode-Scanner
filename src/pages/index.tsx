@@ -1,8 +1,11 @@
-import BarcodeScanner from '@/components/BarcodeScanner'
-import { TextResult } from 'dynamsoft-javascript-barcode/dist/types/interface/textresult';
+import dynamic from 'next/dynamic'
+import type { BarcodeResultItem } from 'dynamsoft-barcode-reader-bundle'
 import Head from 'next/head'
 import React from 'react';
 import homeStyles from '../styles/Home.module.css';
+
+// The barcode scanner is browser-only, so load it without server-side rendering.
+const BarcodeScanner = dynamic(() => import('@/components/BarcodeScanner'), { ssr: false });
 
 export async function getServerSideProps() {
   let license:string|undefined = process.env.DBRLicense;
@@ -19,12 +22,12 @@ export default function Home(props:any) {
     setIsActive(!isActive);
   }
 
-  const onScanned = (results:TextResult[]) => {
-    if (results.length>0) {
+  const onScanned = (results: BarcodeResultItem[]) => {
+    if (results.length > 0) {
       let text = "";
       for (let index = 0; index < results.length; index++) {
         const result = results[index];
-        text = text + result.barcodeFormatString + ": " + result.barcodeText + "\n";
+        text = text + (result.formatString || "Unknown") + ": " + result.text + "\n";
       }
       alert(text);
       setIsActive(false);
